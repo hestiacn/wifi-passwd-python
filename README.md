@@ -19,15 +19,10 @@ pip install pywifi comtypes
 | `comtypes` | Windows COM 交互库，`pywifi` 在 Windows 上的底层依赖 |
 
 > **注意**：`comtypes` 仅在 Windows 系统上需要，Linux/macOS 无需安装。
-```
-
----
 
 # 无需监听模式网卡，支持 Windows 的 WiFi 密码自动化破解工具
 
 一键扫描、自动尝试常见密码，帮你找回自己的 WiFi 密码。
-
----
 
 ## 依赖安装
 
