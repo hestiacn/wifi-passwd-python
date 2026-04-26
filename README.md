@@ -11,6 +11,14 @@ weak-password-set.txt 这是弱口令
 ---
 
 ---
+```python
+py -m pip install pywifi
+py -m pip install comtypes
+```
+- `pywifi`：WiFi 操作库，用于扫描、连接无线网络
+- `comtypes`：Windows COM 交互库，`pywifi` 在 Windows 上的底层依赖
+- 
+修复了中文乱码的问题。现在你可以通过输入序列号进行测试
 
 python脚本非常简单，有一些可以定义的东西，你可以修改这部分
 
