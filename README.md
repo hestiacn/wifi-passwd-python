@@ -1,61 +1,129 @@
-# 无需监听模式网卡，支持Win, Python自动化破解WiFi密码
+## 依赖安装
 
----
+执行脚本前，需要先安装以下两个 Python 库：
 
-wifi-default-initial-passwords.txt 这是一些路由器的**默认登陆地址**和**默认管理员密码**
+```bash
+pip install pywifi
+pip install comtypes
+```
 
-wordlist.txt 这些口令中包含了大量的19990101这种日期
+或一次性安装：
 
-weak-password-set.txt 这是弱口令
+```bash
+pip install pywifi comtypes
+```
 
----
+| 库 | 作用 |
+|:---|:---|
+| `pywifi` | WiFi 操作库，用于扫描、连接无线网络 |
+| `comtypes` | Windows COM 交互库，`pywifi` 在 Windows 上的底层依赖 |
 
----
-
-python脚本非常简单，有一些可以定义的东西，你可以修改这部分
-
-```python
-        if network.ssid == "likewendy":
-            continue
-        if network.ssid == "ChinaNet-acgx":
-            continue
-        if network.ssid == "":
-            continue
-        # if network.signal <= -75:
-            # continue
-        if network.ssid != "TP-LINK_DFB7":
-            continue
+> **注意**：`comtypes` 仅在 Windows 系统上需要，Linux/macOS 无需安装。
 ```
 
 ---
 
+# 无需监听模式网卡，支持 Windows 的 WiFi 密码自动化破解工具
+
+一键扫描、自动尝试常见密码，帮你找回自己的 WiFi 密码。
+
 ---
 
-默认对pywifi返回的SSID倒序遍历破解
+## 依赖安装
 
-```python
-# 你可以修改这一句，去除reversed从而正序
-# 如果你设置了 if network.signal <= -xx: 正序和倒序实际上都差不多
-for i,network in enumerate(reversed(wifi_list)):
+执行脚本前，需要先安装以下两个 Python 库：
+
+```bash
+pip install pywifi
+pip install comtypes
+```
+
+或一次性安装：
+
+```bash
+pip install pywifi comtypes
+```
+
+| 库 | 作用 |
+|:---|:---|
+| `pywifi` | WiFi 操作库，用于扫描、连接无线网络 |
+| `comtypes` | Windows COM 交互库，`pywifi` 在 Windows 上的底层依赖 |
+
+> **注意**：`comtypes` 仅在 Windows 系统上需要，Linux/macOS 无需安装。
+
+---
+
+## 文件说明
+
+| 文件 | 内容 |
+|:---|:---|
+| `wordlist.txt` | 包含大量 `19990101` 格式的日期型密码（可自行添加） |
+| `weak-password-set.txt` | 常见弱口令集合（可自行添加） |
+| `found_password.txt` | 破解成功时自动生成，保存结果 |
+
+---
+
+## 使用方法
+
+1. **以管理员身份运行** PowerShell 或 CMD
+2. 安装依赖（见上方）
+3. 运行脚本：
+   ```bash
+   python main.py
+   ```
+4. 根据提示**输入 WiFi 对应的序号**（无需输入中文）
+5. 选择破解模式：
+   - `1` 快速模式（约100个常见密码）
+   - `2` 标准模式（约400个高概率密码，推荐）
+6. 等待结果
+
+---
+
+## 交互示例
+
+```
+============================================================
+序号    SSID                            信号强度
+------------------------------------------------------------
+1       xxx的nova 13 Pro                     -37
+2       xx礼品                        -64
+3       siri                   -80
+============================================================
+
+请选择要破解的WiFi（输入序号）: 2
 ```
 
 ---
 
+## 密码生成策略（内置，无需外部字典）
+
+脚本会自动生成约 **400 个** 高概率密码：
+
+- 8位纯数字常见组合（`12345678`、`66668888`、`11223344` 等）
+- 常见英文密码（`password`、`admin123`、`iloveyou` 等）
+- 年份组合（1980-2025）
+- 年月日格式（生日类）
+- 手机号前8位常见区段
+- 单词+数字组合
+
 ---
 
-密码字典中有些密码好像是为WPA设计的，非常短，我设置了限制
+## 密码长度限制
 
-```python
-            if len(passwd) < 8:
-                continue
-```
-
-如果有需要你可以修改此限制
+WiFi 密码要求至少 **8 位**，脚本默认只尝试长度 ≥ 8 位的密码。
 
 ---
 
-对于成功概率，你是否听说过一句话，给一个猴子无限长的寿命和一个键盘，它总有一天能敲出Windows操作系统
+## 关于成功率
 
-如果你觉得有用，请点个 star 送我上去
+> 给一个猴子无限长的寿命和一个键盘，它总有一天能敲出 Windows 操作系统。
 
-——我没找到这样直抒胸臆的开源代码，才写的
+概率很小，但不为 **0**。
+
+---
+
+## 写在最后
+
+我没找到这样直抒胸臆的开源代码，所以自己写了一个。
+
+如果你觉得有用，请点个 **Star** 送我上去 ⭐
